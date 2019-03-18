@@ -40,7 +40,11 @@ describe('on page load ', () => {
     const listItems = await page.$$('.nav-li')
 
     expect(navbar).toBe(true)
-    expect(listItems.length).toBe(4)
+    if (listItems.length !== 3) {
+      await page.screenshot({path: 'screenshot.png'})
+    }
+      
+    expect(listItems.length).toBe(3)
   })
   
   // test(
@@ -109,10 +113,6 @@ describe('login form', () => {
     const firstNameCookie = cookies.find(c => c.name === 'firstName' && c.value === user.firstName)
     expect(firstNameCookie).not.toBeUndefined()
   })
-  
-
-
-
 
 })
 
