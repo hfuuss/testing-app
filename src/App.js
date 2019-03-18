@@ -7,9 +7,16 @@ import SuccessMessage from './SuccessMessage'
 class App extends Component {
   state = { 
     complete: false,
-    firstName: ''
+    firstName: '',
+    pokemon: {}
    }
 
+   async componentDidMount() {
+    const data = await fetch('https://pokeapi.co/api/v2/pokedex/1/')
+    this.setState({pokemon: data})
+  }
+
+  
   handleSubmit = e => {
     e.preventDefault()
     if (document.cookie.includes('JWT')){
@@ -28,7 +35,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      { this.state.complete ? 
+        <h3 data-testid="pokemon">
+          {this.state.pokemon.next ? 'Received Pokemon data!' : 'Something went wrong'}
+        </h3>
+        { 
+          this.state.complete 
+          ? 
           <SuccessMessage/> 
           : 
           <Login submit={this.handleSubmit} input={this.handleInput} />

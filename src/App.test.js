@@ -25,6 +25,17 @@ beforeAll(async () => {
   browser = await puppeteer.launch(isDebugging())
   page = await browser.newPage()
   page.emulate(iPhone)
+
+  await page.setRequestInterception(true);
+  page.on('request', interceptedRequest => {
+    if (interceptedRequest.url.includes('pokeapi')) {
+      interceptedRequest.abort();
+    } else {
+      interceptedRequest.continue();
+    }
+  });
+
+
   await page.goto('http://localhost:3000/')
 })
 
